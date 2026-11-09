@@ -125,7 +125,10 @@ body::after {
 .line-mask {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.08em;
+  /* room for descenders (the y in Everyone) under the tight line-height;
+     the negative margin keeps the lines visually close */
+  padding: 0.04em 0.06em 0.26em;
+  margin: -0.04em -0.06em -0.22em;
 }
 .line-mask > span {
   display: inline-block;
