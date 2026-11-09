@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tempo School of Performing Arts
 
-## Getting Started
+One-page site for Tempo School of Performing Arts (Castle Rock, CO), rebuilt from
+the original Weebly site with Next.js and exported as static HTML for Firebase Hosting.
 
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All copy, dates, links, instructors, gallery photos and newsletters live in
+[`app/content.ts`](app/content.ts). Images are in `public/images`, newsletters in
+`public/newsletters` (full size + `thumb-` version), the recital program in `public/docs`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Build & deploy (Firebase static hosting)
 
-## Learn More
+`next.config.ts` uses `output: "export"`, so `npm run build` writes a static site to `out/`.
+`firebase.json` serves `out/` with clean URLs and long-lived caching for hashed assets.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm i -g firebase-tools
+firebase login
+firebase use --add          # pick your Firebase project (creates .firebaserc)
+npm run deploy              # build + firebase deploy --only hosting
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://tempocastlerock.web.app`) at build time so
+social-share preview images resolve to absolute URLs.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Cache Components / PPR are disabled: they need a server and can't be used with static export.
+- The project lives on an exFAT drive, where macOS writes `._*` files that corrupt Turbopack's
+  cache. `predev`/`prebuild` scripts delete them automatically (`npm run clean:appledouble`).

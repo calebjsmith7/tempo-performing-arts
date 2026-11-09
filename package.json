@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "clean:appledouble": "find . -name '._*' -not -path './node_modules/*' -type f -delete 2>/dev/null || true",
+    "predev": "npm run -s clean:appledouble",
+    "prebuild": "npm run -s clean:appledouble"
   },
   "dependencies": {
     "next": "16.4.5",

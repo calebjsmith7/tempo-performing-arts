@@ -1,12 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Static HTML export to ./out for Firebase Hosting (no server required)
+  output: "export",
+  // The default image loader needs a server; images are pre-sized in /public
+  images: { unoptimized: true },
   experimental: {
     agentFeedback: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Cache Components / PPR need a server and are incompatible with output: "export"
   turbopack: {
     rules: {
       "*.css": {
