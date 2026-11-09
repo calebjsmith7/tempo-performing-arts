@@ -37,11 +37,14 @@ export default function Nav() {
   }, [open]);
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "border-b border-white/5 bg-ink/75 py-2 backdrop-blur-xl"
-          : "bg-transparent py-4"
+        scrolled ? "py-2" : "py-4"
+      } ${
+        scrolled && !open
+          ? "border-b border-white/5 bg-ink/75 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 sm:px-8" aria-label="Main">
@@ -103,7 +106,10 @@ export default function Nav() {
           </button>
         </div>
       </nav>
+    </header>
 
+      {/* Kept outside <header>: its backdrop-filter would make this fixed
+          overlay position against the header bar instead of the viewport. */}
       <div
         id="mobile-menu"
         className={`fixed inset-0 z-40 flex flex-col justify-center bg-velvet-deep/95 px-8 backdrop-blur-xl transition-[clip-path] duration-700 ease-[cubic-bezier(.76,0,.24,1)] lg:hidden ${
@@ -137,6 +143,6 @@ export default function Nav() {
           Get Recital Tickets
         </a>
       </div>
-    </header>
+    </>
   );
 }
